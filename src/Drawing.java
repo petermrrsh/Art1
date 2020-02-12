@@ -14,7 +14,7 @@ import javax.swing.JFrame;
 public class Drawing extends Canvas {
 
     
-	public static boolean drawing = true;
+	/*public static boolean drawing = true;
 	public static ArrayList<Rectangle> rectangles;
 	public static Timer t;
 	public static int degree;
@@ -59,27 +59,17 @@ public class Drawing extends Canvas {
 	}
 	
 	
+	
 	public static void animationLoop(Graphics g) 
     	{
-    	    while(drawing) //the loop
-    	    {
-    	        update();
-    	        render(g);
-    	        try {
-    	            Thread.sleep(30);                 
-    	        } catch(InterruptedException ex) {
-    	            Thread.currentThread().interrupt();
-    	        }
-    	    }
+    	    
     	}
     
 	public static void drawOvalFrom(Graphics g, Rectangle rect) {
 		g.drawOval(rect.x, rect.y, rect.width, rect.height);
 	}
 	
-    public static Rectangle centerRect(int centerX, int centerY, int width, int height) {
-    	return new Rectangle(centerX - (width/2), centerY - (height/2), width, height);
-    }
+    
 	
 	
 	public static void main(String[] args) {
@@ -91,9 +81,18 @@ public class Drawing extends Canvas {
         frame.setVisible(true);
         Listener listener = new Listener();
         frame.addKeyListener(listener);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
-        
-        
+        while(drawing) //the loop
+    	    {
+    	        update();
+    	        render(g);
+    	        try {
+    	            Thread.sleep(30);                 
+    	        } catch(InterruptedException ex) {
+    	            Thread.currentThread().interrupt();
+    	        }
+    	    }
         
     }
 
@@ -102,7 +101,7 @@ public class Drawing extends Canvas {
 	public static void stopDrawing() {
 		drawing = false;
 		
-	}
+	}*/
 
 }
 
