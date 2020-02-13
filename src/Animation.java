@@ -11,41 +11,31 @@ import javax.swing.JPanel;
 @SuppressWarnings("serial")
 public class Animation extends JPanel {
 
-	ArrayList<Rectangle> rectangles;
-	int degree;
+	ArrayList<Rect> rectangles;
+	public static int NUM_CIRCLES = 30;
 
 	private void updateRectangles() {
-		degree += 1;
+		boolean startNext = true;
+		for (Rect rect : rectangles) {
+			if (rect.isRotating()) {
+				rect.setVertDegree(rect.getVertDegree() + 2);
+			} else if (startNext) {
+				rect.setRotating(true);
+				startNext = false;
+			}
+		}
 	}
 	
 	private void createRectangles() {
 		rectangles = new ArrayList<>();
 		
 		double sideLength = 5;
-    	for (int i = 0; i < 30; i++) {
-    		rectangles.add(centerRect(200,200, (int)sideLength, (int)sideLength));
-    		sideLength += 10;
+    	for (int i = 0; i < NUM_CIRCLES; i++) {
+    		rectangles.add(new Rect(300,300, (int)sideLength, (int)sideLength));
+    		sideLength += 20;
     	}
-    	degree = 0;
 	}
 	
-	///////STATIC METHODS
-	
-	public static Rectangle centerRect(int centerX, int centerY, int width, int height) {
-    	return new Rectangle(centerX - (width/2), centerY - (height/2), width, height);
-    }
-	
-	public static Rectangle rectangleAtDegree(Rectangle r, int degree) {
-		int centerX = r.x + r.width/2;
-		double width = r.width * Math.abs(Math.cos((degree/360.0)*2*Math.PI));
-		return centerRect(centerX, 200, (int)width, r.height);
-	}
-	
-	public static void drawOvalFrom(Graphics graphics, Rectangle rect) {
-		graphics.drawOval(rect.x, rect.y, rect.width, rect.height);
-	}
-	
-	///////STATIC METHODS
 
 	@Override
 	public void paint(Graphics g) {
@@ -53,13 +43,17 @@ public class Animation extends JPanel {
 		Graphics2D g2d = (Graphics2D) g;
 		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
 				RenderingHints.VALUE_ANTIALIAS_ON);
+		
 		//refresh background
 		g2d.setColor(Color.white);
-		g2d.fillRect(0, 0, 500, 500);
+		g2d.fillRect(0, 0, 800, 800);
+		
 		//draw circles
 		g2d.setColor(Color.black);
-		for (Rectangle rect: rectangles) {
-				drawOvalFrom(g2d, rectangleAtDegree(rect, degree));
+		g2d.setStroke(g2d.getStroke());
+		for (Rect rect: rectangles) {
+				Rectangle r = rect.getRectangle();
+				g2d.drawOval(r.x, r.y, r.width, r.height);
 		}
 	}
 
@@ -67,16 +61,20 @@ public class Animation extends JPanel {
 		JFrame frame = new JFrame("Mini Tennis");
 		Animation a = new Animation();
 		frame.add(a);
-		frame.setSize(400, 400);
+		frame.setSize(630, 650);
 		frame.setVisible(true);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		a.createRectangles();
+		int counter = 0;
 		
 		while (true) {
+			if (counter % 10 == 0) {
+				
+			}
 			a.updateRectangles();
 			a.repaint();
-			Thread.sleep(10);
+			Thread.sleep(20);
 		}
 	}
 }
